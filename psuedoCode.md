@@ -40,8 +40,10 @@ JS:
 7. Add Guess letter to list of letters already guessed
 
 8. Check if word was completed:
-   -if Yes, alert Win, increment win value and reset game
+   -if Yes, alert Win, increment win value.
    -if No, repeat step 4
+
+9. reset game
 
 Varaibles
 Array of puzzle Words to be selected at random (Global)

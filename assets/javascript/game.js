@@ -4,13 +4,21 @@
 
 var puzzleWordPool = ["TestA", "TestB", "TestC", "TestD", "TestE", "TestF"];
 var guessedLetter;
-var previusGuesses = [];
+var previusGuesses = ["a", "b"];
 var remainingAttempts = 3;
 var puzzleSolved = false;
+var gameStarted = false;
 
 //Functions
 
 //Objects
+var gameInstructions = {
+  begin: "Press any Key to Start, Guess the word to Win",
+  playing: "Press a Key to Guess that Letter",
+  win: "You Won! Press any Key to Start a New Game",
+  lose: "You Lost..., press any Key to Try Again"
+};
+
 var guessingGame = {
   puzzleWord: "",
   puzzleWordLetters: [],
@@ -48,7 +56,8 @@ var guessingGame = {
     );
     var letterCount = puzzleword.length;
     for (i = 0; i < letterCount; i++) {
-      this.puzzleWordLetters.push(puzzleword[i]);
+      var temp = puzzleword[i].toLowerCase();
+      this.puzzleWordLetters.push(temp);
     }
     console.log(this.puzzleWordLetters);
   },
@@ -88,5 +97,33 @@ var guessingGame = {
     this.selectWord(puzzleWordPool);
     this.getLetters(this.puzzleWord);
     this.createPlaceholder();
+  }
+};
+
+//
+
+//Key Event
+document.onkeyup = function(event) {
+  if (!gameStarted) {
+    //Start game, change gameStarted to true
+  } else {
+    //Guess Process
+
+    var guess = event.key;
+    guess = guess.toLowerCase();
+
+    //Check if letter was already guessed
+
+    if (previusGuesses.includes(guess)) {
+      alert("Already guessed that letter try again");
+      console.log("already Guessed that letter");
+    } else {
+      console.log("did not already Guess that letter");
+      //Run Guess attempt( return if puzzle was solved
+    }
+
+    if (puzzleSolved) {
+      //Alert Win, Increment win Value, change game started to false, reset game
+    }
   }
 };
