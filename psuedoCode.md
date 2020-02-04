@@ -19,22 +19,33 @@ Bootstrap
 
 JS:
 
-Create an array of guessing words
-Create a var that will ref current guessing word
-Create an Array that will store all letters that make up guessing word
-Create an array of Guessing words already solved
-Create a var that refs numbers of attempts
-create an var that refs guessed letter
-create an array that stores guessed letters
-creat a condition for if puzzle is solved
+1. Select a word at random from list of available words, assigned the word as the puzzle word, and remove the word from the list.
 
-select a random word from list and assign as current guessing word
-get info from selected word
-create (\_) place holder for each letter in the word
+2. Break the puzzle word down into a list of the letters that make up the word.
 
-start event listener to get key up
-assign key up to guessed letter var
+3. Display a \_ for each letter in the word as a place holder.
 
-Check if guessed letter was already guessed then check if current word contains guess, remove remaining attempts if incorrect, reveal letter if correct.
+4. Listen for which key is pressed by user
 
-if all letters revealed, remove word from pool, congratulate player then restart game with new word
+5. Store the letter for key pressed as guessed letter, then check if letter was already guessed:
+   -if no, continue to next step
+   -if yes alert that word was already guessed, repeat step 4.
+
+6. Check if puzzle word letters list contains guessed letter:
+   -if yes, alert success (or some sort of visual confirmation) then change associated place holder to letter
+   -if no, alert failure, then decrement remaining guess value
+
+7. Add Guess letter to list of letters already guessed
+
+8. Check if word was completed:
+   -if Yes, alert Win, increment win value and reset game
+   -if No, repeat step 4
+
+Varaibles
+Array of puzzle Words to be selected at random
+String that will ref current Puzzle Word
+Array that will store all letters that make up puzzle word
+Integer var that refs numbers of remaining attempts
+String var that refs current user guessed letter
+Array that stores previouly guessed letters
+Condition for if puzzle is solved
