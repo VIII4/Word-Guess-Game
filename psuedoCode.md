@@ -19,11 +19,13 @@ Bootstrap
 
 JS:
 
-1. Select a word at random from list of available words, assigned the word as the puzzle word, and remove the word from the list.
+1. Select a word at random from list of available words, assigned the word as the puzzle word, and remove the word from the list. _COMPLETE_
 
 2. Break the puzzle word down into a list of the letters that make up the word.
+   -Get the length of the word
+   -using length of word, for loop through letter index, add each letter to array _Complete_
 
-3. Display a \_ for each letter in the word as a place holder.
+3. Display a \_ for each letter in the word as a place holder. _Complete_
 
 4. Listen for which key is pressed by user
 
@@ -42,10 +44,10 @@ JS:
    -if No, repeat step 4
 
 Varaibles
-Array of puzzle Words to be selected at random
+Array of puzzle Words to be selected at random (Global)
 String that will ref current Puzzle Word
 Array that will store all letters that make up puzzle word
-Integer var that refs numbers of remaining attempts
+Integer var that refs numbers of remaining attempts (Global)
 String var that refs current user guessed letter
 Array that stores previouly guessed letters
-Condition for if puzzle is solved
+Condition for if puzzle is solved(Global)
