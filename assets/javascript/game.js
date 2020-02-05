@@ -4,10 +4,14 @@
 
 var puzzleWordPool = ["TestA", "TestB", "TestC", "TestD", "TestE", "TestF"];
 var guessedLetter;
-var previusGuesses = ["a", "b"];
+var previusGuesses = [" "];
 var remainingAttempts = 3;
 var puzzleSolved = false;
 var gameStarted = false;
+
+//Ref To HTML Elements
+var instructionElem;
+var pWordElement;
 
 //Functions
 
@@ -24,6 +28,7 @@ var guessingGame = {
   puzzleWordLetters: [],
   displayedWord: "",
 
+  //Secondary
   selectWord: function(wordPool) {
     console.log("Current Pool of Words= " + wordPool);
     this.puzzleWord = "";
@@ -42,7 +47,7 @@ var guessingGame = {
 
       console.log("selected Word is " + selectedWord);
       console.log("Updated Word pool is= " + puzzleWordPool);
-      this.puzzleWord = selectedWord;
+      this.puzzleWord = selectedWord.toLowerCase();
     }
   },
 
@@ -74,6 +79,7 @@ var guessingGame = {
 
   updatePlaceholder: function(guess) {
     var temp = "";
+
     for (i = 0; i < this.puzzleWord.length; i++) {
       //Check if placeholder exist,
       //Check if guess matches letter at index, if yes,
@@ -89,8 +95,44 @@ var guessingGame = {
         temp = temp.concat(update);
       }
     }
+
     this.displayedWord = temp;
     console.log(this.displayedWord);
+  },
+
+  //Primary
+  startGame: function() {
+    this.selectWord(puzzleWordPool);
+    this.getLetters(this.puzzleWord);
+    this.createPlaceholder();
+    instructionElem = document.getElementById("instruction");
+    pWordElement = document.getElementById("puzzleWord");
+    pWordElement.textContent = this.displayedWord;
+
+    return true;
+  },
+
+  gameTurn: function(guess) {
+    //check if word contains guess, if so run update, if not reduce attempts.
+
+    if (this.puzzleWord.includes(guess)) {
+      this.updatePlaceholder(guess);
+      previusGuesses.push(guess);
+    } else {
+      //Alert incorrect, visualize incorrect.
+      remainingAttempts--;
+      console.log(remainingAttempts);
+    }
+
+    //Update Displayed
+    pWordElement.textContent = this.displayedWord;
+
+    //check if puzzle is solved, return case.
+    if (this.displayedWord == this.puzzleWord) {
+      return true;
+    } else {
+      return false;
+    }
   },
 
   debuggerTest: function() {
@@ -100,14 +142,18 @@ var guessingGame = {
   }
 };
 
-//
+//Calls
+
+//Set instruction to default
 
 //Key Event
 document.onkeyup = function(event) {
   if (!gameStarted) {
-    //Start game, change gameStarted to true
+    //Start Guessing Game, change gameStarted to true, and Update instruction
+    gameStarted = guessingGame.startGame();
+    instructionElem.textContent = gameInstructions.playing;
   } else {
-    //Guess Process
+    //Guessing Game Turn
 
     var guess = event.key;
     guess = guess.toLowerCase();
@@ -119,11 +165,13 @@ document.onkeyup = function(event) {
       console.log("already Guessed that letter");
     } else {
       console.log("did not already Guess that letter");
+      puzzleSolved = guessingGame.gameTurn(guess);
       //Run Guess attempt( return if puzzle was solved
     }
 
     if (puzzleSolved) {
       //Alert Win, Increment win Value, change game started to false, reset game
+      alert("You Win");
     }
   }
 };
