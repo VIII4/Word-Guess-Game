@@ -6,18 +6,21 @@ var puzzleWordPool = ["TestA", "TestB", "TestC", "TestD", "TestE", "TestF"];
 var guessedLetter;
 var previusGuesses = [" "];
 var remainingAttempts = 3;
+var winCounter = 0;
 var puzzleSolved = false;
 var gameStarted = false;
 
 //Ref To HTML Elements
 var instructionElem;
 var pWordElement;
+var remGuessElement;
+var winsElement;
+var prevGuessesElement;
 
 //Functions
 
 //Objects
 var gameInstructions = {
-  begin: "Press any Key to Start, Guess the word to Win",
   playing: "Press a Key to Guess that Letter",
   win: "You Won! Press any Key to Start a New Game",
   lose: "You Lost..., press any Key to Try Again"
@@ -100,13 +103,37 @@ var guessingGame = {
     console.log(this.displayedWord);
   },
 
+  resetPuzzle: function() {
+    remainingAttempts = 3;
+    previusGuesses = [];
+    puzzleSolved = false;
+    this.puzzleWord = "";
+    this.puzzleWordLetters = [];
+    this.displayedWord = "";
+  },
+
+  getElements: function() {
+    instructionElem = document.getElementById("instruction");
+    pWordElement = document.getElementById("puzzleWord");
+    remGuessElement = document.getElementById("numberGuesses");
+    winsElement = document.getElementById("winScore");
+    prevGuessesElement = document.getElementById("lettersGuessed");
+  },
+
+  updateInfoElements: function() {
+    remGuessElement.textContent = remainingAttempts;
+    winsElement.textContent = winCounter;
+    prevGuessesElement.textContent = previusGuesses;
+  },
+
   //Primary
   startGame: function() {
+    this.resetPuzzle();
     this.selectWord(puzzleWordPool);
     this.getLetters(this.puzzleWord);
     this.createPlaceholder();
-    instructionElem = document.getElementById("instruction");
-    pWordElement = document.getElementById("puzzleWord");
+    this.getElements();
+
     pWordElement.textContent = this.displayedWord;
 
     return true;
@@ -133,18 +160,14 @@ var guessingGame = {
     } else {
       return false;
     }
-  },
-
-  debuggerTest: function() {
-    this.selectWord(puzzleWordPool);
-    this.getLetters(this.puzzleWord);
-    this.createPlaceholder();
   }
+
+  //   debuggerTest: function() {
+  //     this.selectWord(puzzleWordPool);
+  //     this.getLetters(this.puzzleWord);
+  //     this.createPlaceholder();
+  //   }
 };
-
-//Calls
-
-//Set instruction to default
 
 //Key Event
 document.onkeyup = function(event) {
@@ -164,14 +187,21 @@ document.onkeyup = function(event) {
       alert("Already guessed that letter try again");
       console.log("already Guessed that letter");
     } else {
+      //Run Guess attempt( return if puzzle was solved
       console.log("did not already Guess that letter");
       puzzleSolved = guessingGame.gameTurn(guess);
-      //Run Guess attempt( return if puzzle was solved
     }
 
     if (puzzleSolved) {
       //Alert Win, Increment win Value, change game started to false, reset game
-      alert("You Win");
+      instructionElem.textContent = gameInstructions.win;
+      winCounter++;
+      gameStarted = false;
+    } else if (!puzzleSolved && remainingAttempts <= 0) {
+      instructionElem.textContent = gameInstructions.lose;
+      gameStarted = false;
+    } else {
     }
+    guessingGame.updateInfoElements();
   }
 };
