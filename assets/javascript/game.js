@@ -5,7 +5,7 @@
 var puzzleWordPool = ["TestA", "TestB", "TestC", "TestD", "TestE", "TestF"];
 var guessedLetter;
 var previusGuesses = [" "];
-var remainingAttempts = 3;
+var remainingAttempts = 5;
 var winCounter = 0;
 var puzzleSolved = false;
 var gameStarted = false;
@@ -21,7 +21,7 @@ var prevGuessesElement;
 
 //Objects
 var gameInstructions = {
-  playing: "Press a Key to Guess that Letter",
+  playing: "Press a Letter Key to Guess that Letter",
   win: "You Won! Press any Key to Start a New Game",
   lose: "You Lost..., press any Key to Try Again"
 };
@@ -50,7 +50,7 @@ var guessingGame = {
 
       console.log("selected Word is " + selectedWord);
       console.log("Updated Word pool is= " + puzzleWordPool);
-      this.puzzleWord = selectedWord.toLowerCase();
+      this.puzzleWord = selectedWord.toUpperCase();
     }
   },
 
@@ -64,7 +64,7 @@ var guessingGame = {
     );
     var letterCount = puzzleword.length;
     for (i = 0; i < letterCount; i++) {
-      var temp = puzzleword[i].toLowerCase();
+      var temp = puzzleword[i];
       this.puzzleWordLetters.push(temp);
     }
     console.log(this.puzzleWordLetters);
@@ -104,7 +104,7 @@ var guessingGame = {
   },
 
   resetPuzzle: function() {
-    remainingAttempts = 3;
+    remainingAttempts = 5;
     previusGuesses = [];
     puzzleSolved = false;
     this.puzzleWord = "";
@@ -133,6 +133,7 @@ var guessingGame = {
     this.getLetters(this.puzzleWord);
     this.createPlaceholder();
     this.getElements();
+    this.updateInfoElements();
 
     pWordElement.textContent = this.displayedWord;
 
@@ -144,12 +145,12 @@ var guessingGame = {
 
     if (this.puzzleWord.includes(guess)) {
       this.updatePlaceholder(guess);
-      previusGuesses.push(guess);
     } else {
       //Alert incorrect, visualize incorrect.
       remainingAttempts--;
       console.log(remainingAttempts);
     }
+    previusGuesses.push(guess);
 
     //Update Displayed
     pWordElement.textContent = this.displayedWord;
@@ -176,10 +177,17 @@ document.onkeyup = function(event) {
     gameStarted = guessingGame.startGame();
     instructionElem.textContent = gameInstructions.playing;
   } else {
-    //Guessing Game Turn
+    //Store Key that was pressed, and Value to be checked if it is a Letter.
 
     var guess = event.key;
-    guess = guess.toLowerCase();
+    guess = guess.toUpperCase();
+
+    var aplhaCheck = event.which;
+
+    if (!(aplhaCheck >= 65 && aplhaCheck <= 90)) {
+      console.log("Key pressed is not alpha");
+      return;
+    }
 
     //Check if letter was already guessed
 
