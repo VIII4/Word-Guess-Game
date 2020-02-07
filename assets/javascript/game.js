@@ -19,6 +19,9 @@ var prevGuessesElement;
 
 //Functions
 
+
+
+
 //Objects
 var gameInstructions = {
   playing: "Press a Letter Key to Guess that Letter",
@@ -169,6 +172,11 @@ var guessingGame = {
   //     this.createPlaceholder();
   //   }
 };
+
+
+
+
+
 
 //Key Event
 document.onkeyup = function(event) {
