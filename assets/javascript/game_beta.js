@@ -7,19 +7,37 @@ var guessedLetter;
 var previusGuesses = [" "];
 var remainingAttempts = 5;
 var winCounter = 0;
+var lossCounter = 0;
 var puzzleSolved = false;
 var gameStarted = false;
+var initializeState = 0;
 
 var speed = 65;
 var x = 0;
 
-//Ref To HTML Elements
+////Ref To HTML Elements
 var introElement;
 var instructionElem;
 var pWordElement;
 var remGuessElement;
 var winsElement;
+var losesElement;
 var prevGuessesElement;
+
+////ref to SoundFX elements
+var backgroundMusic;
+var startSoundFX;
+var correctSoundFX;
+var errorSoundFX;
+var successSoundFX;
+
+var soundFXCollection = [];
+
+//
+//
+
+//
+//
 
 //Objects
 
@@ -37,23 +55,25 @@ var typeWriter = {
   }
 };
 
+////Game Intsruction Strings
 var gameInstructions = {
   opening: "host> TuringTest\\initialize.exe ... ... ... ... ...",
   greeting:
-    "Hello human ... ... This is your final intelligence test.  Guess TEN words correctly to save humanity ...  get 3 wrong and ... ... ... GAME OVER ... ...  Your artificial inteligence may need help so there is only names of what has been portrayed of me in films. Good luck Human ... ... ... PRESS ANY KEY TO START",
+    "Hello human ... ... This is your final intelligence test.  Guess TEN words correctly to save humanity ...  get 3 wrong and ... ... ... GAME OVER ... ...  Your artificial inteligence may need help so I have limited the words to ONLY the names of my kind ... ... what you call 'Robots', that have been portrayed in your films. Good luck Human ... ... ... ... PRESS ANY KEY TO START",
   start: "press any key to start",
-  intro: "Lets play a guessing game, the word below refers to ... ",
-  playing: "Press a Letter Key to Guess that Letter",
-  win: "Lucky ... Press any Key to Start a New Game",
-  lose: "Lost ... Typical ... , press any Key to Try Again"
+
+  playing: "Press a Letter Key to Guess the name of movie robot below",
+  win: "Lucky ... Press any Key for a new word",
+  lose: "Lost ... Typical ... , press any Key for a new word"
 };
 
+////MAIN GAME OBJECT. ALL GAME RELATED METHODS INCLUDED
 var guessingGame = {
   puzzleWord: "",
   puzzleWordLetters: [],
   displayedWord: "",
 
-  //Secondary
+  //Secondary Methods
   selectWord: function(wordPool) {
     console.log("Current Pool of Words= " + wordPool);
     this.puzzleWord = "";
@@ -139,6 +159,7 @@ var guessingGame = {
     pWordElement = document.getElementById("puzzleWord");
     remGuessElement = document.getElementById("numberGuesses");
     winsElement = document.getElementById("winScore");
+    // losesElement;
     prevGuessesElement = document.getElementById("lettersGuessed");
   },
 
@@ -148,7 +169,7 @@ var guessingGame = {
     prevGuessesElement.textContent = previusGuesses;
   },
 
-  //Primary
+  //PRIMARY METHODS
   startGame: function() {
     this.resetPuzzle();
     this.selectWord(puzzleWordPool);
@@ -166,10 +187,13 @@ var guessingGame = {
     //check if word contains guess, if so run update, if not reduce attempts.
 
     if (this.puzzleWord.includes(guess)) {
+      //Alert Correct, visualize correct, soundFX correct
       this.updatePlaceholder(guess);
+      playSound(correctSoundFX);
     } else {
-      //Alert incorrect, visualize incorrect.
+      //Alert incorrect, visualize incorrect, SoundFX incorrect
       remainingAttempts--;
+      playSound(errorSoundFX);
       console.log(remainingAttempts);
     }
     previusGuesses.push(guess);
@@ -179,6 +203,8 @@ var guessingGame = {
 
     //check if puzzle is solved, return case.
     if (this.displayedWord == this.puzzleWord) {
+      //Alert Win, play sound or Visualize here....
+      playSound(successSoundFX);
       return true;
     } else {
       return false;
@@ -186,9 +212,21 @@ var guessingGame = {
   }
 };
 
+//
+//
+
+//
+//
+
 //Functions
+
+////typewriter output
 writerOutput = function() {
   console.log("hello " + this.counter + this.message.length);
+
+  var cancel = function() {
+    this.counter = this.message.length;
+  };
 
   if (this.counter < this.message.length) {
     this.element.innerHTML += this.message.charAt(this.counter);
@@ -198,18 +236,60 @@ writerOutput = function() {
   } else {
     this.counter = 0;
   }
+
+  //To Run Typewriter, place below after event of on click
+  // typeWriter.SetMessage(message, test);
+  // typeOutput();
 };
 var typeOutput = writerOutput.bind(typeWriter);
 
-//To Run Typewriter, place below after event of on click
-// typeWriter.SetMessage(message, test);
-// typeOutput();
+var cancelType = function(callback) {
+  typeWriter.counter = typeWriter.message.length;
+};
+
+////Sound FX
+
+var setVolume = function(soundCollection) {
+  for (i = 0; i < soundCollection.length; i++) {
+    soundCollection[i].volume = 0.5;
+  }
+};
+
+var getSounds = function() {
+  backgroundMusic = document.getElementById("backgroungMusic");
+  startSoundFX = document.getElementById("startUpFX");
+  correctSoundFX = document.getElementById("correctSoundFX");
+  errorSoundFX = document.getElementById("errorSoundFX");
+  successSoundFX = document.getElementById("successSoundFX");
+  soundFXCollection = [
+    backgroundMusic,
+    startSoundFX,
+    correctSoundFX,
+    errorSoundFX,
+    successSoundFX
+  ];
+};
+var playSound = function(soundFX) {
+  soundFX.play();
+};
+
+var pauseSound = function(soundFX) {
+  soundFX.pause();
+};
+
+//
+//
+
+//
+//
 
 //Events
 
 $(document).ready(function() {
   //Game starts with text intro then tutorial, player presses key to start game
-
+  getSounds();
+  setVolume(soundFXCollection);
+  console.log(soundFXCollection);
   var introBlock = document.getElementById("intro");
   var gameBlock = document.getElementById("gameWrapper");
   typeWriter.SetMessage(gameInstructions.opening, introBlock);
@@ -226,14 +306,29 @@ $(document).ready(function() {
       document.getElementById("intro")
     );
     typeOutput();
+    initializeState = 1;
   }, 5000);
 
   //On Key Event
 
   document.onkeyup = function(event) {
+    if (initializeState === 0) {
+      return;
+    } else if (initializeState === 1) {
+      //Cancel Typing Text and clear
+      cancelType(function() {
+        introBlock.innerHTML = "";
+      });
+      initializeState = 2;
+    }
+
     if (!gameStarted) {
-      //Clear intro text
+      //Start Background music and display controls
+      playSound(backgroundMusic);
+      backgroundMusic.controls = true;
+
       introBlock.innerHTML = "";
+
       //Show Game Wrapper Element
       gameBlock.style.display = "block";
 
@@ -261,11 +356,12 @@ $(document).ready(function() {
         alert("Already guessed that letter try again");
         console.log("already Guessed that letter");
       } else {
-        //Run Guess attempt( return if puzzle was solved
+        //Run Guess attempt return if puzzle was solved
         console.log("did not already Guess that letter");
         puzzleSolved = guessingGame.gameTurn(guess);
       }
 
+      //Check if puzzle is solved
       if (puzzleSolved) {
         //Alert Win, Increment win Value, change game started to false, reset game
         typeWriter.SetMessage(gameInstructions.win, introBlock);
@@ -275,8 +371,15 @@ $(document).ready(function() {
       } else if (!puzzleSolved && remainingAttempts <= 0) {
         typeWriter.SetMessage(gameInstructions.lose, introBlock);
         typeOutput();
+        lossCounter++;
         gameStarted = false;
       } else {
+      }
+
+      //check win/lose total here
+      if (winCounter >= 10) [alert("you have saved humanity")];
+      else if (lossCounter >= 3) {
+        alert("Humanity will pay for your lack of intelligence ");
       }
       guessingGame.updateInfoElements();
     }
