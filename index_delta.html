@@ -28,23 +28,22 @@
 
   <body>
     <div class="container">
+      <div class="row mt-2"></div>
       <div class="row">
         <div class="col-md-10">
-          <h2 id="intro" class="text-left"></h2>
+          <h3 id="intro" class="text-left"></h3>
         </div>
         <div class="col-md"></div>
       </div>
 
       <div class="row">
         <div class="col">
-          <h2 id="instruction" class="text-left">
-            <!-- Press any Key to Start, Reveal the Word to Win! -->
-          </h2>
+          <h2 id="instruction" class="text-left" style="display: none;"></h2>
         </div>
       </div>
 
       <!-- Game Content Wrapper -->
-      <div class="container">
+      <div id="gameWrapper" class="container" style="display: none;">
         <!-- Row with number of guesses remaining and Letters Guessed   -->
         <div class="row row-col-1 row-col-md-2">
           <div class="col-md-8">
@@ -66,22 +65,23 @@
           <!-- Puzzle Image and Puzzle Word -->
           <div class="col">
             <div class="row">
-              <div class="card border-0 bg-transparent ">
-                <img
-                  src="assets/images/ASCII_Border.svg"
-                  class="card-img"
-                  alt="..."
-                />
-                <div class="card-img-overlay">
-                  <div class="row">
-                    <div class="col"></div>
-                    <div class="col-8">
-                      <h3 id="puzzleWord">********</h3>
+              <div class="col">
+                <div class="card border-0 bg-transparent ">
+                  <img
+                    src="assets/images/AsciiBorder2.png"
+                    class="card-img"
+                    alt="..."
+                  />
+                  <div class="card-img-overlay">
+                    <div class="row">
+                      <div class="col">
+                        <h3 id="puzzleWord" class="text-center">********</h3>
+                      </div>
                     </div>
-                    <div class="col"></div>
                   </div>
                 </div>
               </div>
+
               <!-- <div class="col-12">Puzzle Image Placeholder</div>
               <div class="col-12">
                 <h3 id="puzzleWord">********</h3>

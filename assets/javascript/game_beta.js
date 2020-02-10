@@ -10,7 +10,7 @@ var winCounter = 0;
 var puzzleSolved = false;
 var gameStarted = false;
 
-var speed = 80;
+var speed = 65;
 var x = 0;
 
 //Ref To HTML Elements
@@ -38,12 +38,14 @@ var typeWriter = {
 };
 
 var gameInstructions = {
-  opening: "Execute: Hive\TuringTest.exe ... ... ... ... ...",
+  opening: "host> TuringTest\\initialize.exe ... ... ... ... ...",
+  greeting:
+    "Hello human ... ... This is your final intelligence test.  Guess TEN words correctly to save humanity ...  get 3 wrong and ... ... ... GAME OVER ... ...  Your artificial inteligence may need help so there is only names of what has been portrayed of me in films. Good luck Human ... ... ... PRESS ANY KEY TO START",
   start: "press any key to start",
   intro: "Lets play a guessing game, the word below refers to ... ",
   playing: "Press a Letter Key to Guess that Letter",
-  win: "You Won! Press any Key to Start a New Game",
-  lose: "You Lost..., press any Key to Try Again"
+  win: "Lucky ... Press any Key to Start a New Game",
+  lose: "Lost ... Typical ... , press any Key to Try Again"
 };
 
 var guessingGame = {
@@ -203,60 +205,80 @@ var typeOutput = writerOutput.bind(typeWriter);
 // typeWriter.SetMessage(message, test);
 // typeOutput();
 
-//Key Event
-
-document.onkeyup = function(event) {
-  if (!gameStarted) {
-    //Start Guessing Game, change gameStarted to true, and Update instruction
-    gameStarted = guessingGame.startGame();
-
-    //Display Instruction Update
-    // instructionElem.textContent = gameInstructions.playing;
-    typeWriter.SetMessage(gameInstructions.playing, instructionElem);
-    typeOutput();
-  } else {
-    //Store Key that was pressed, and Value to be checked if it is a Letter.
-
-    var guess = event.key;
-    guess = guess.toUpperCase();
-
-    var aplhaCheck = event.which;
-
-    if (!(aplhaCheck >= 65 && aplhaCheck <= 90)) {
-      console.log("Key pressed is not alpha");
-      return;
-    }
-
-    //Check if letter was already guessed
-
-    if (previusGuesses.includes(guess)) {
-      alert("Already guessed that letter try again");
-      console.log("already Guessed that letter");
-    } else {
-      //Run Guess attempt( return if puzzle was solved
-      console.log("did not already Guess that letter");
-      puzzleSolved = guessingGame.gameTurn(guess);
-    }
-
-    if (puzzleSolved) {
-      //Alert Win, Increment win Value, change game started to false, reset game
-      instructionElem.textContent = gameInstructions.win;
-      winCounter++;
-      gameStarted = false;
-    } else if (!puzzleSolved && remainingAttempts <= 0) {
-      instructionElem.textContent = gameInstructions.lose;
-      gameStarted = false;
-    } else {
-    }
-    guessingGame.updateInfoElements();
-  }
-};
+//Events
 
 $(document).ready(function() {
-  //after page loads
-  typeWriter.SetMessage(
-    gameInstructions.opening,
-    document.getElementById("intro")
-  );
+  //Game starts with text intro then tutorial, player presses key to start game
+
+  var introBlock = document.getElementById("intro");
+  var gameBlock = document.getElementById("gameWrapper");
+  typeWriter.SetMessage(gameInstructions.opening, introBlock);
   typeOutput();
+
+  //Get Main Game content Block to display after intro message
+  var temp = document.getElementById("instruction");
+
+  //display intro text 5 seconds after initial prompt begins
+  setTimeout(function() {
+    document.getElementById("intro").innerHTML = "";
+    typeWriter.SetMessage(
+      gameInstructions.greeting,
+      document.getElementById("intro")
+    );
+    typeOutput();
+  }, 5000);
+
+  //On Key Event
+
+  document.onkeyup = function(event) {
+    if (!gameStarted) {
+      //Clear intro text
+      introBlock.innerHTML = "";
+      //Show Game Wrapper Element
+      gameBlock.style.display = "block";
+
+      //Start Guessing Game, change gameStarted to true, and Update instruction
+      gameStarted = guessingGame.startGame();
+
+      //Display Instruction Update
+      introBlock.textContent = gameInstructions.playing;
+    } else {
+      //Store Key that was pressed, and Value to be checked if it is a Letter.
+
+      var guess = event.key;
+      guess = guess.toUpperCase();
+
+      var aplhaCheck = event.which;
+
+      if (!(aplhaCheck >= 65 && aplhaCheck <= 90)) {
+        console.log("Key pressed is not alpha");
+        return;
+      }
+
+      //Check if letter was already guessed
+
+      if (previusGuesses.includes(guess)) {
+        alert("Already guessed that letter try again");
+        console.log("already Guessed that letter");
+      } else {
+        //Run Guess attempt( return if puzzle was solved
+        console.log("did not already Guess that letter");
+        puzzleSolved = guessingGame.gameTurn(guess);
+      }
+
+      if (puzzleSolved) {
+        //Alert Win, Increment win Value, change game started to false, reset game
+        typeWriter.SetMessage(gameInstructions.win, introBlock);
+        typeOutput();
+        winCounter++;
+        gameStarted = false;
+      } else if (!puzzleSolved && remainingAttempts <= 0) {
+        typeWriter.SetMessage(gameInstructions.lose, introBlock);
+        typeOutput();
+        gameStarted = false;
+      } else {
+      }
+      guessingGame.updateInfoElements();
+    }
+  };
 });
