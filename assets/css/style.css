@@ -1,0 +1,11 @@
+body {
+  font-family: "Share Tech Mono", monospace;
+  color: rgb(43, 214, 0);
+
+  background: url(../images/Background2.jpg) no-repeat center center fixed;
+  /* background: url(../images/WindowsDesignBG.png) no-repeat center center fixed; */
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}

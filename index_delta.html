@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <!-- Working title -->
+    <title>Turing Test</title>
+
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/css/style.css" />
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Javascript -->
+    <script src="assets/javascript/game_beta.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10">
+          <h2 id="intro" class="text-left"></h2>
+        </div>
+        <div class="col-md"></div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h2 id="instruction" class="text-left">
+            <!-- Press any Key to Start, Reveal the Word to Win! -->
+          </h2>
+        </div>
+      </div>
+
+      <!-- Game Content Wrapper -->
+      <div class="container">
+        <!-- Row with number of guesses remaining and Letters Guessed   -->
+        <div class="row row-col-1 row-col-md-2">
+          <div class="col-md-8">
+            <h3>Number of Guesses Remaining:</h3>
+          </div>
+          <div class="col-md-4">
+            <h3 id="numberGuesses">5</h3>
+          </div>
+          <div class="col-md-8">
+            <h3>Wins:</h3>
+          </div>
+          <div class="col-md-4">
+            <h3 id="winScore">0</h3>
+          </div>
+        </div>
+
+        <!-- Row Puzzle word and Imagery -->
+        <div class="row">
+          <!-- Puzzle Image and Puzzle Word -->
+          <div class="col">
+            <div class="row">
+              <div class="card border-0 bg-transparent ">
+                <img
+                  src="assets/images/ASCII_Border.svg"
+                  class="card-img"
+                  alt="..."
+                />
+                <div class="card-img-overlay">
+                  <div class="row">
+                    <div class="col"></div>
+                    <div class="col-8">
+                      <h3 id="puzzleWord">********</h3>
+                    </div>
+                    <div class="col"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="col-12">Puzzle Image Placeholder</div>
+              <div class="col-12">
+                <h3 id="puzzleWord">********</h3>
+              </div> -->
+            </div>
+          </div>
+          <!-- Display of Selected Letter -->
+          <div class="col">
+            <div class="row">
+              <div class="col-12">Selected Letter Imagery Placeholder</div>
+              <div class="col-12">
+                <h3 id="lettersGuessed"></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
