@@ -1,0 +1,134 @@
+<html>
+  <head>
+    <!-- Working title -->
+    <title>Turing Test</title>
+
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/css/style.css" />
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Javascript -->
+    <script src="assets/javascript/game_beta.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <div class="row mt-2">
+        <div class="col"></div>
+        <div class="col-6">
+          <h3 id="intro" class="text-left"></h3>
+        </div>
+        <div class="col"></div>
+      </div>
+    </header>
+
+    <div id="mainWrapper" class="container">
+      <div class="row mt-5 p-2"></div>
+      <div class="row p-2">
+        <div id="gameWrapper" class="container" style="display: none;">
+          <div id="gameInfo" class="row row-col-1 row-col-md-2">
+            <div class="col-md-8">
+              <h3>Number of Guesses Remaining:</h3>
+            </div>
+            <div class="col-md-4">
+              <h3 id="numberGuesses">8</h3>
+            </div>
+            <div class="col-md-8">
+              <h3>Wins:</h3>
+            </div>
+            <div class="col-md-4">
+              <h3 id="winScore">0</h3>
+            </div>
+            <div class="col-md-8">
+              <h3>Losses:</h3>
+            </div>
+            <div class="col-md-4">
+              <h3 id="lossScore">0</h3>
+            </div>
+          </div>
+          <div class="row row-col-2 ">
+            <div id="gamePuzzleCard" class="col">
+              <div class="card border-0 bg-transparent ">
+                <img
+                  src="assets/images/AsciiBorder2.png"
+                  class="card-img"
+                  alt="..."
+                />
+                <div class="card-img-overlay">
+                  <div class="row h-100 align-items-center h-">
+                    <div class="col">
+                      <h3 id="puzzleWord" class="text-center">********</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="selectedLetters" class="col">
+              <div class="row">
+                <div class="col-12"><h3>Previously Guessed Letters</h3></div>
+                <div class="col-12">
+                  <h3 id="lettersGuessed"></h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-5 p-2"></div>
+    </div>
+
+    <footer>
+      <div class="row justify-center">
+        <div class="col"></div>
+        <div class="col-4">
+          <audio
+            id="backgroungMusic"
+            src="assets/soundFX/_backgroundMusic.ogg"
+            type="audio/ogg"
+            allow="autoplay"
+          ></audio>
+          <audio
+            id="startUpFX"
+            src="assets/soundFX/_computerStartup.wav"
+            type="audio/wav"
+            allow="autoplay"
+          ></audio>
+          <audio
+            id="correctSoundFX"
+            src="assets/soundFX/_computer_Correct.wav"
+            type="audio/wav"
+            allow="autoplay"
+          ></audio>
+          <audio
+            id="errorSoundFX"
+            src="assets/soundFX/_computerError.wav"
+            type="audio/wav"
+            allow="autoplay"
+          ></audio>
+          <audio
+            id="successSoundFX"
+            src="assets/soundFX/_successFX.wav"
+            type="audio/wav"
+            allow="autoplay"
+          ></audio>
+        </div>
+        <div class="col"></div>
+      </div>
+    </footer>
+  </body>
+</html>
